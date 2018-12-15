@@ -1,4 +1,7 @@
+
 # coding: utf-8
+
+# In[1]:
 
 import pandas as pd
 import numpy as np
@@ -6,61 +9,49 @@ from sklearn.svm import SVR
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import mean_squared_error
 from sklearn import linear_model
+from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import mean_squared_error
 import math
 
 
-# In[86]:
+# In[19]:
 
+#Read Input Dataset
 toRun = pd.read_csv('mergedDataset.csv')
-
-#print(toRun.head(0))
-toRun = toRun[['id', 'player_position', 'player_name', 'last10_ratio_cleanSheets_opp', 'last10_ratio_cleanSheets_own', 'last10_ratio_wins_opp', 'last10_ratio_wins_own', 'last3_assists', 'last3_goals', 'last3_ratio_points', 'last3_ycards', 'opp_team_rank', 'player_team_rank', 'player_value', 'ratio_assists', 'ratio_attempted_passes', 'ratio_big_chancesCreated', 'ratio_big_chancesMiss', 'ratio_creativity', 'ratio_dribbles', 'ratio_fouls', 'ratio_goals_conceded_opp_team', 'ratio_goals_conceded_player_team', 'ratio_goals_opp_team', 'ratio_goals_player_team', 'ratio_goals_scored', 'ratio_key_passes', 'ratio_leading_goal', 'ratio_minutes_played', 'ratio_offsides', 'ratio_open_playcross', 'ratio_own_goals', 'ratio_penalties_conceded', 'ratio_penalties_missed', 'ratio_penalties_saved', 'ratio_saves', 'ratio_selection', 'ratio_tackles', 'ratio_threat', 'week_no', 'season', 'week_points']]
-
-
-# In[87]:
-
-testSet = toRun.loc[((toRun['season'] == 2019) & (toRun['week_no'] == 7))]
-X_test = testSet.loc[:,[i for i in list(testSet.columns) if i not in ['week_points','player_position','id', 'player_name', 'player_team', 'player_class', 'season']]]
-Y_test = pd.DataFrame(testSet.loc[:, testSet.columns == 'player_class'])
+toRun = toRun[['id', 'player_position', 'player_name', 'player_team', 'last10_ratio_cleanSheets_opp', 'last10_ratio_cleanSheets_own', 'last10_ratio_wins_opp', 'last10_ratio_wins_own', 'last3_assists', 'last3_goals', 'last3_ratio_points', 'last3_ycards', 'opp_team_rank', 'player_team_rank', 'player_value', 'ratio_assists', 'ratio_attempted_passes', 'ratio_big_chancesCreated', 'ratio_big_chancesMiss', 'ratio_creativity', 'ratio_dribbles', 'ratio_fouls', 'ratio_goals_conceded_opp_team', 'ratio_goals_conceded_player_team', 'ratio_goals_opp_team', 'ratio_goals_player_team', 'ratio_goals_scored', 'ratio_key_passes', 'ratio_leading_goal', 'ratio_minutes_played', 'ratio_offsides', 'ratio_open_playcross', 'ratio_own_goals', 'ratio_penalties_conceded', 'ratio_penalties_missed', 'ratio_penalties_saved', 'ratio_saves', 'ratio_selection', 'ratio_tackles', 'ratio_threat', 'week_no', 'season', 'week_points']]
+toRun = pd.get_dummies(toRun, columns = ['player_position'], drop_first=True)
 
 
-# In[89]:
+# In[59]:
 
-############
-y_pred = rf.predict(X_test)
-#print(testSet.head())
-counter = 0
-for i, counter in zip(y_pred, range(len(testSet))):
-    #print(y_pred[counter])
-    if(y_pred[counter] == 'A'):
-        #print(testSet.iloc[counter,2])
-        print(testSet.iloc[counter,41])
+testSet = toRun.loc[((toRun['season'] == 2019) & (toRun['week_no'] == 5))]
+X_test = testSet.loc[:,[i for i in list(testSet.columns) if i not in ['week_points','id', 'player_name', 'player_team', 'season']]]
+y_test = pd.DataFrame(testSet.loc[:, testSet.columns == 'week_points'])
 
 
-# In[49]:
+# In[60]:
 
-trainingSet = toRun.loc[((toRun['season'] == 2019) & (toRun['week_no'] != 8))|(toRun['season'] == 2018)]
-X_train = trainingSet.loc[:,[i for i in list(trainingSet.columns) if i not in ['week_points','player_position','id', 'player_name', 'player_team']]]
-Y_train = pd.DataFrame(trainingSet.loc[:, trainingSet.columns == 'week_points'])
+trainingSet = toRun.loc[((toRun['season'] == 2019) & (toRun['week_no'] != 5))|(toRun['season'] == 2018)|(toRun['season'] == 2017)]
+X_train = trainingSet.loc[:,[i for i in list(trainingSet.columns) if i not in ['week_points','id', 'player_name', 'player_team', 'season']]]
+y_train = pd.DataFrame(trainingSet.loc[:, trainingSet.columns == 'week_points'])
 
 
-# In[50]:
+# In[61]:
 
 reg = linear_model.Lasso(alpha = 0.1)
-reg.fit(X_train, Y_train)
-y_pred = reg.predict(testSet.loc[:,[i for i in list(testSet.columns) if i not in ['week_points','player_position','id', 'player_name', 'player_team']]])
+reg.fit(X_train, y_train)
+y_pred = reg.predict(X_test)
 
-print('RMSE: ', math.sqrt(mean_squared_error(testSet['week_points'], y_pred)))
+print('MSE: ', (mean_squared_error(y_test, y_pred)))
 
 
-# In[51]:
+# In[62]:
 
 finalSet = testSet.copy(deep=True)
 finalSet['score'] = y_pred
 
 
-# In[52]:
+# In[63]:
 
 from itertools import permutations
 import pandas as pd
@@ -77,8 +68,8 @@ def checkTeamLimit(cntTeam):
             return False
     return True
 #Get the best expected line-up for each formation
-def getBestLineup(scoresDF, threshold = [3, 8, 8, 6], budget = 850):
-    formations = [[4, 4, 2], [4, 3, 3], [3, 4, 3], [3, 5, 2]]
+def getBestLineup(scoresDF, threshold = [3, 8, 9, 6], budget = 850):
+    formations = [[4, 4, 2], [4, 3, 3], [3, 4, 3], [3, 5, 2], [4, 5, 1]]
     scoresDF = scoresDF.sort_values(by='score', ascending=False)
     weekPointsDF = scoresDF.sort_values(by='week_points', ascending=False)
     
@@ -97,17 +88,16 @@ def getBestLineup(scoresDF, threshold = [3, 8, 8, 6], budget = 850):
         cntMax = max(cntMax, df[i, sInd])
         cntTeam.append(df[i, ptInd])
         return cntPrice, cntFor, cntActual, cntScore, cntTeam, cntMax
-    
-    GKs = (scoresDF[scoresDF.player_position == 'GKP']).values
-    FWs = (scoresDF[scoresDF.player_position == 'FWD']).values
-    MDs = (scoresDF[scoresDF.player_position == 'MID']).values
-    DFs = (scoresDF[scoresDF.player_position == 'DEF']).values
+    GKs = (scoresDF[scoresDF.player_position_GKP == 1]).values
+    FWs = (scoresDF[scoresDF.player_position_FWD == 1]).values
+    MDs = (scoresDF[scoresDF.player_position_MID == 1]).values
+    DFs = (scoresDF[(scoresDF.player_position_GKP == 0) & (scoresDF.player_position_MID == 0) & (scoresDF.player_position_FWD == 0)]).values
     
     #get Week Dream Team
-    GKs2 = weekPointsDF[weekPointsDF.player_position == 'GKP']
-    FWs2 = weekPointsDF[weekPointsDF.player_position == 'FWD']
-    MDs2 = weekPointsDF[weekPointsDF.player_position == 'MID']
-    DFs2 = weekPointsDF[weekPointsDF.player_position == 'DEF']
+    GKs2 = weekPointsDF[weekPointsDF.player_position_GKP == 1]
+    FWs2 = weekPointsDF[weekPointsDF.player_position_FWD == 1]
+    MDs2 = weekPointsDF[weekPointsDF.player_position_MID == 1]
+    DFs2 = weekPointsDF[(weekPointsDF.player_position_GKP == 0) & (weekPointsDF.player_position_MID == 0) & (weekPointsDF.player_position_FWD == 0)]
     DreamTeam = []
     for i in range(threshold[0]):
         DreamTeam.append(GKs2.iloc[i].player_name)
@@ -178,7 +168,12 @@ def getBestLineup(scoresDF, threshold = [3, 8, 8, 6], budget = 850):
         print('Price: ', bestPrice, '\nExpected Score: ', maxi, '\nActual Score:', bestActual, '\nPercent from DreamTeam:', bestPercent)
 
 
-# In[53]:
+# In[ ]:
 
 getBestLineup(finalSet)
+
+
+# In[ ]:
+
+
 
