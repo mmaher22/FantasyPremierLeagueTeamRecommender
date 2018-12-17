@@ -2,7 +2,7 @@
 # coding: utf-8
 
 # In[1]:
-
+# Required packages 
 import pandas as pd
 import numpy as np
 from sklearn.svm import SVR
@@ -173,6 +173,6 @@ def getBestLineup(scoresDF, threshold = [3, 8, 9, 6], budget = 850):
 getBestLineup(finalSet)
 
 
-
+#End
 
 
