@@ -1,4 +1,4 @@
-# List of Extracted Features from Raw Data of Kaggle Datasets / Fantasy Premier League API:
+# List of the extracted features from Raw Data of Kaggle Datasets / Fantasy Premier League API:
 ## Each Instance represent Player Info before a specific Game Week (Week_Points is the target column which is required to be predicted)
 ### The player info (features) in each instance includes all the following:
 #### Player History:
