@@ -46,7 +46,7 @@ results_train = {}
 results_test = {}
 
 
-# In[ ]:
+# In[ 5]:
 
 #Random Forest
 reg = RandomForestRegressor(random_state=0, criterion = 'mse')
@@ -68,7 +68,7 @@ results_train['random_forest'] = tr_err
 results_test['random_forest'] = ts_err
 
 
-# In[10]:
+# In[6]:
 
 reg = GradientBoostingRegressor(random_state=0, n_estimators = 100, min_samples_split = 5).fit(X_train, y_train)
 y_train_pred = reg.predict(X_train)
@@ -78,7 +78,7 @@ ts_err = mean_squared_error(y_test_pred, y_test)
 print(tr_err, ts_err)
 
 
-# In[5]:
+# In[7]:
 
 #Lasso Linear Regression
 reg = linear_model.Lasso()
@@ -99,7 +99,7 @@ results_train['Lasso_regression'] = tr_err
 results_test['Lasso_regression'] = ts_err
 
 
-# In[ ]:
+# In[8 ]:
 
 #Ridge Linear Regression
 reg = Ridge()
@@ -121,7 +121,7 @@ results_train['Ridge_regression'] = tr_err
 results_test['Ridge_regression'] = ts_err
 
 
-# In[ ]:
+# In[9 ]:
 
 #SVM Regression
 reg = SVR()
@@ -144,7 +144,7 @@ results_train['SVM'] = tr_err
 results_test['SVM'] = ts_err
 
 
-# In[5]:
+# In[10]:
 
 #Linear Regression
 reg = LinearRegression()
@@ -165,7 +165,7 @@ results_train['Linear_regression'] = tr_err
 results_test['Linear_regression'] = ts_err
 
 
-# In[ ]:
+# In[11 ]:
 
 #Decision Tree Regressor
 reg = DecisionTreeRegressor().fit(X_train, y_train)
@@ -176,7 +176,7 @@ ts_err = mean_squared_error(y_test_pred, y_test)
 print(tr_err, ts_err)
 
 
-# In[ ]:
+# In[ 12]:
 
 #KNN
 reg = KNeighborsRegressor()
@@ -194,7 +194,7 @@ ts_err = mean_squared_error(y_test_pred, y_test)
 print(tr_err, ts_err)
 
 
-# In[ ]:
+# In[ 13]:
 
 #GBR
 reg = GradientBoostingRegressor()

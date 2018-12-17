@@ -14,7 +14,7 @@ from sklearn.metrics import mean_squared_error
 import math
 
 
-# In[19]:
+# In[2]:
 
 #Read Input Dataset
 toRun = pd.read_csv('mergedDataset.csv')
@@ -22,21 +22,21 @@ toRun = toRun[['id', 'player_position', 'player_name', 'player_team', 'last10_ra
 toRun = pd.get_dummies(toRun, columns = ['player_position'], drop_first=True)
 
 
-# In[59]:
+# In[3]:
 
 testSet = toRun.loc[((toRun['season'] == 2019) & (toRun['week_no'] == 5))]
 X_test = testSet.loc[:,[i for i in list(testSet.columns) if i not in ['week_points','id', 'player_name', 'player_team', 'season']]]
 y_test = pd.DataFrame(testSet.loc[:, testSet.columns == 'week_points'])
 
 
-# In[60]:
+# In[4]:
 
 trainingSet = toRun.loc[((toRun['season'] == 2019) & (toRun['week_no'] != 5))|(toRun['season'] == 2018)|(toRun['season'] == 2017)]
 X_train = trainingSet.loc[:,[i for i in list(trainingSet.columns) if i not in ['week_points','id', 'player_name', 'player_team', 'season']]]
 y_train = pd.DataFrame(trainingSet.loc[:, trainingSet.columns == 'week_points'])
 
 
-# In[61]:
+# In[5]:
 
 reg = linear_model.Lasso(alpha = 0.1)
 reg.fit(X_train, y_train)
@@ -45,13 +45,13 @@ y_pred = reg.predict(X_test)
 print('MSE: ', (mean_squared_error(y_test, y_pred)))
 
 
-# In[62]:
+# In[6]:
 
 finalSet = testSet.copy(deep=True)
 finalSet['score'] = y_pred
 
 
-# In[63]:
+# In[7]:
 
 from itertools import permutations
 import pandas as pd
@@ -168,12 +168,11 @@ def getBestLineup(scoresDF, threshold = [3, 8, 9, 6], budget = 850):
         print('Price: ', bestPrice, '\nExpected Score: ', maxi, '\nActual Score:', bestActual, '\nPercent from DreamTeam:', bestPercent)
 
 
-# In[ ]:
+# In[ 8]:
 
 getBestLineup(finalSet)
 
 
-# In[ ]:
 
 
 
