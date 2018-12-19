@@ -1,4 +1,5 @@
 # Team Recommendation System for Fantasy Premier League:
+<img src = "https://www.legalgamblingandthelaw.com/news/wp-content/uploads/2017/12/premier-league-fantasy-footaball.jpg"> <br>
   Fantasy Premier League (fantasy.premierleague.com) is also the most popular fantasy soccer game , with more than 5 million users, in the soccer world. Get your fantasy season started by drafting players to build a solid team and using coaching tips to keep your team going strong. 
   Every week, Fantasy Premier League users are competing to choose their team of players based on different criteria. The success of your fantasy football team hinges on your picks, and there is a different strategy to pick your draft. The main target is to minimize risk, maximize gain, and make the tough decisions when it comes to fantasy football draft day to chose the most useful team at the start of any league to get a high score. 
 
