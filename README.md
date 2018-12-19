@@ -60,3 +60,11 @@ Comparison between average scores by fantasy users and our model: <br>
 <br>Examples of Chosen Team:<br>
 <img src="https://github.com/mmaher22/FantasyPremierLeagueTeamRecommender/blob/master/Team%20Formation/Picture6.png?raw=true" width=200>
 <img src="https://github.com/mmaher22/FantasyPremierLeagueTeamRecommender/blob/master/Team%20Formation/Picture7.png?raw=true" width=200>
+
+
+#### Future Work:
+As a future work, we suggest to:
+  1. Try more different features about either team, or player performance history. 
+  2. Include more information about player injury state.
+  3. Add features about match importance to each team, and which team is the home team and which one is the away team.
+  4. Use more seasons data in training can improve the model performance.
